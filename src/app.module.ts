@@ -3,6 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { NewsletterModule } from "./newsletter/newsletter.module";
 import { Subscriber } from "./newsletter/entities/subscriber.entity";
 import { ConfigModule } from "@nestjs/config";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
    imports: [
@@ -25,6 +27,10 @@ import { ConfigModule } from "@nestjs/config";
                rejectUnauthorized: false,
             },
          },
+      }),
+      ServeStaticModule.forRoot({
+         rootPath: join(__dirname, "..", "public"), // Carpeta donde está tu HTML
+         exclude: ["/api*"], // Opcional: evita que interfiera con APIs REST
       }),
       NewsletterModule,
    ],

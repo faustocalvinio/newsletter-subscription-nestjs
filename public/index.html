@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Subscribe to Newsletter</title>
+      <style>
+         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+         }
+
+         .subscription-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: fit-content;
+            /* max-width: 400px; */
+         }
+         .subscription-form h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+         }
+         .subscription-form input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+         }
+         .subscription-form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+         }
+         .subscription-form button:hover {
+            background-color: #0056b3;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="subscription-form">
+         <h1>Subscribe to our Newsletter</h1>
+         <form action="/subscribe" method="POST">
+            <input
+               type="email"
+               name="email"
+               placeholder="Enter your email"
+               required
+            />
+            <button type="submit">Subscribe</button>
+         </form>
+      </div>
+
+      <script>
+         document
+            .querySelector("form")
+            .addEventListener("submit", function (event) {
+               const emailInput = document.querySelector('input[name="email"]');
+               if (!emailInput.value) {
+                  event.preventDefault();
+                  alert("Please enter a valid email address.");
+               }
+               event.preventDefault();
+
+               fetch("/newsletter/subscribe", {
+                  method: "POST",
+                  headers: {
+                     "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ email: emailInput.value }),
+               })
+                  .then((response) => response.json())
+                  .then((data) => {
+                     console.log(data);
+                  });
+            });
+      </script>
+   </body>
+</html>
