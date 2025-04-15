@@ -5,9 +5,18 @@ import { Subscriber } from "./newsletter/entities/subscriber.entity";
 import { ConfigModule } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
    imports: [
+      ThrottlerModule.forRoot({
+         throttlers: [
+            {
+               ttl: 60, // Time to live in seconds
+               limit: 10, // Maximum number of requests within the TTL
+            },
+         ],
+      }),
       ConfigModule.forRoot({
          isGlobal: true,
       }),
@@ -21,12 +30,12 @@ import { join } from "path";
          entities: [Subscriber],
          synchronize: true,
          logging: true,
-         ssl: true,
-         extra: {
-            ssl: {
-               rejectUnauthorized: false,
-            },
-         },
+         // ssl: true,
+         // extra: {
+         //    ssl: {
+         //       rejectUnauthorized: false,
+         //    },
+         // },
       }),
       ServeStaticModule.forRoot({
          rootPath: join(__dirname, "..", "public"), // Carpeta donde está tu HTML

@@ -16,6 +16,12 @@ export class NewsletterService {
       private readonly configService: ConfigService
    ) {}
    async subscribe(subscribeDto: SubscribeDto) {
+      const existingSubscriber = await this.subscriberRepository.findOneBy({
+         email: subscribeDto.email,
+      });
+      if (existingSubscriber) {
+         return { message: "Ya estás suscrito", user: subscribeDto.email };
+      }
       const subscriber = this.subscriberRepository.create(subscribeDto);
       await this.subscriberRepository.save(subscriber);
       return { message: "Suscripción exitosa", user: subscribeDto.email };
@@ -51,8 +57,18 @@ export class NewsletterService {
       return { message: "Desuscripción exitosa", user: subscribeDto.email };
    }
 
+   async getSubscribers() {
+      const subscribers = await this.subscriberRepository.find();
+      // const data = await this.scrapeNewsTitles();
+
+      // console.log(data.slice(0, 5));
+      return subscribers.map((subscriber) => subscriber.email);
+   }
+
    async sendNewsletter() {
       const subscribers = await this.subscriberRepository.find();
+      console.log(subscribers);
+      // Si no hay suscriptores, no se envía nada
       if (subscribers.length === 0) return;
 
       const titles = await this.scrapeNewsTitles();

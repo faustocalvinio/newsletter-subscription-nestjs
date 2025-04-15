@@ -1,19 +1,15 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-db-pdfsender
-    restart: always
+  db:
+    image: postgres:latest
+    container_name: postgres_db1
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pdfsender
-      MYSQL_USER: fausto
-      MYSQL_PASSWORD: SJMEfnPsgyCwAOY(3rO!N1$&
+      POSTGRES_USER: fausto
+      POSTGRES_PASSWORD: passfausto
+      POSTGRES_DB: pdfsender
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - ./mysql_data:/var/lib/mysql
-    
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mysql_data:
-
+  postgres_data:
