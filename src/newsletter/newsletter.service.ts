@@ -59,18 +59,14 @@ export class NewsletterService {
 
    async getSubscribers() {
       const subscribers = await this.subscriberRepository.find();
-      // const data = await this.scrapeNewsTitles();
-
-      // console.log(data.slice(0, 5));
       return subscribers.map((subscriber) => subscriber.email);
    }
 
    async sendNewsletter() {
       const subscribers = await this.subscriberRepository.find();
       console.log(subscribers);
-      // Si no hay suscriptores, no se envía nada
       if (subscribers.length === 0) return;
-
+      
       const titles = await this.scrapeNewsTitles();
       if (titles.length === 0) {
          console.log("No hay títulos disponibles para enviar.");
@@ -106,34 +102,5 @@ export class NewsletterService {
       console.log("Newsletter enviado con éxito.");
    }
 
-   // async sendNewsletter() {
-   //    const subscribers = await this.subscriberRepository.find();
-   //    if (subscribers.length === 0) return;
-   //    console.log(this.configService.get<string>("EMAIL_USER"));
-   //    const transporter = nodemailer.createTransport({
-   //       service: "gmail",
-   //       auth: {
-   //          user: this.configService.get<string>("EMAIL_USER"),
-   //          pass: this.configService.get<string>("EMAIL_PASS"),
-   //       },
-   //    });
-   //    const fecha = new Date();
-
-   //    const dia = fecha.getDate(); // Día del mes (1-31)
-   //    const mes = fecha.getMonth() + 1; // Mes (0-11) → Se suma 1 para que sea (1-12)
-   //    const anio = fecha.getFullYear(); // Año completo (ej: 2024)
-   //    for (const subscriber of subscribers) {
-   //       await transporter.sendMail({
-   //          from: '"Newsletter" <facaldevelopment@gmail.com>',
-   //          to: subscriber.email,
-   //          subject: `Newsletter del dia ${dia} de ${mes} del ${anio}`,
-   //          text: "Aquí tienes tu newsletter semanal en PDF",
-   //          attachments: [
-   //             {
-   //                path: "C:/Users/faust/Downloads/TS027+Building+a+REST+API.pdf",
-   //             },
-   //          ],
-   //       });
-   //    }
-   // }
+   
 }

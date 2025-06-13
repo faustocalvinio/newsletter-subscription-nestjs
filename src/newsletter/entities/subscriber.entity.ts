@@ -8,6 +8,13 @@ export class Subscriber {
    @Column({ unique: true })
    email: string;
 
-   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })   
+   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
    dateOfSubscription: Date;
+
+   @Column({
+      type: "enum",
+      enum: ["lacapital", "rosario3", "propias"],
+      default: "propias",
+   })
+   option: "lacapital" | "rosario3" | "propias";
 }
